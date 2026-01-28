@@ -1,0 +1,309 @@
+{
+  "name": "Classifier",
+  "version": 30,
+  "private": false,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "workato_recipe_function",
+    "name": "execute",
+    "as": "fe67462b",
+    "keyword": "trigger",
+    "input": {
+      "parameters_schema_json": "[{\"control_type\":\"text\",\"label\":\"Message\",\"type\":\"string\",\"name\":\"message\"}]",
+      "result_schema_json": "[{\"name\":\"category\",\"type\":\"string\",\"optional\":false,\"label\":\"category\",\"hint\":\"Category for the message\",\"control_type\":\"text\"},{\"name\":\"confidence\",\"type\":\"string\",\"optional\":false,\"label\":\"confidence\",\"hint\":\"Confidence of the Classification\",\"control_type\":\"text\"},{\"name\":\"message\",\"type\":\"string\",\"optional\":false,\"label\":\"message\",\"hint\":\"Original message\",\"control_type\":\"text\"},{\"name\":\"due_date\",\"type\":\"string\",\"optional\":true,\"label\":\"due date\",\"control_type\":\"text\"}]"
+    },
+    "extended_output_schema": [
+      {
+        "label": "Parameters",
+        "name": "parameters",
+        "properties": [
+          {
+            "control_type": "text",
+            "label": "Message",
+            "type": "string",
+            "name": "message"
+          }
+        ],
+        "type": "object"
+      }
+    ],
+    "block": [
+      {
+        "number": 1,
+        "provider": "anthropic_connector_2100003785_1768602991",
+        "name": "parse_text",
+        "as": "d14c6dc3",
+        "title": null,
+        "description": null,
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "model": "Claude Haiku 4.5"
+        },
+        "input": {
+          "model": "claude-haiku-4-5-20251001",
+          "text": "=_dp('{\"pill_type\":\"output\",\"provider\":\"workato_recipe_function\",\"line\":\"fe67462b\",\"path\":[\"parameters\",\"message\"]}') +\n\"Take current date as\" + today",
+          "object_schema": "[{\"name\":\"catgory\",\"type\":\"string\",\"optional\":false,\"description\":\"Categorise the message as: People, Projects, Ideas, Admin, Other (catch all)\",\"control_type\":\"text\",\"label\":\"Catgory\"},{\"name\":\"confidence\",\"type\":\"string\",\"optional\":false,\"description\":\"Rate your confidence level for the classification: (1) High (2) Medium (3) Low Default: If not sure set to default to Low\",\"control_type\":\"text\",\"label\":\"Confidence\"},{\"name\":\"message\",\"type\":\"string\",\"optional\":false,\"description\":\"Output the original message\",\"control_type\":\"text\",\"label\":\"Message\"},{\"name\":\"due_date\",\"type\":\"string\",\"optional\":true,\"description\":\"Extract any date or datetime from the text, return ISO 8601 format (YYYY-MM-DD or YYYY-MM-DDTHH:MM:SS), or null if none found.\",\"control_type\":\"text\",\"label\":\"Due date\"}]"
+        },
+        "extended_output_schema": [
+          {
+            "control_type": "text",
+            "label": "Catgory",
+            "name": "catgory",
+            "optional": false,
+            "type": "string"
+          },
+          {
+            "control_type": "text",
+            "label": "Confidence",
+            "name": "confidence",
+            "optional": false,
+            "type": "string"
+          },
+          {
+            "control_type": "text",
+            "label": "Message",
+            "name": "message",
+            "optional": false,
+            "type": "string"
+          },
+          {
+            "control_type": "text",
+            "label": "Due date",
+            "name": "due_date",
+            "optional": true,
+            "type": "string"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "control_type": "text-area",
+            "hint": "Provide the text to be parsed",
+            "label": "Source text",
+            "name": "text",
+            "optional": false,
+            "type": "string"
+          },
+          {
+            "control_type": "schema-designer",
+            "custom_properties": [
+              {
+                "name": "description",
+                "type": "string",
+                "optional": true,
+                "label": "Description"
+              }
+            ],
+            "empty_schema_title": "Provide output fields for your job output.",
+            "exclude_fields": [
+              "hint",
+              "label"
+            ],
+            "exclude_fields_types": [
+              "integer",
+              "date",
+              "date_time"
+            ],
+            "extends_schema": true,
+            "hint": "Enter the fields that you want to identify from the text. Add descriptions for extracting the fields. Required fields take effect only on top level. Nested fields are always optional.",
+            "label": "Fields to identify",
+            "name": "object_schema",
+            "optional": false,
+            "sample_data_type": "json_http",
+            "type": "string"
+          },
+          {
+            "control_type": "integer",
+            "hint": "The maximum number of tokens to generate before stopping. Different models have different maximum values for this parameter. See <a href='https://docs.anthropic.com/en/docs/about-claude/models' target='_blank'>models</a> for details. If left blank, defaults to 4096.",
+            "label": "Max tokens",
+            "name": "max_tokens",
+            "optional": true,
+            "type": "string",
+            "render_input": "integer_conversion"
+          }
+        ],
+        "uuid": "3119ae74-51b7-4101-bfff-3115e97b9e5f"
+      },
+      {
+        "number": 2,
+        "provider": "logger",
+        "name": "log_message",
+        "as": "67012501",
+        "keyword": "action",
+        "input": {
+          "user_logs_enabled": true,
+          "message": "=\"Category: \" + _dp('{\"line\": \"d14c6dc3\", \"path\": [\"catgory\"], \"pill_type\": \"output\", \"provider\":\"anthropic_connector_2100003785_1768602991\"}') + \"\\nConfidence: \" + _dp('{\"line\": \"d14c6dc3\", \"path\": [\"confidence\"], \"pill_type\": \"output\", \"provider\":\"anthropic_connector_2100003785_1768602991\"}') + \"\\nMessage: \" + _dp('{\"line\": \"fe67462b\", \"path\": [\"parameters\", \"message\"], \"pill_type\": \"output\", \"provider\": \"workato_recipe_function\"}')",
+          "log_level": "INFO"
+        },
+        "extended_input_schema": [
+          {
+            "control_type": "select",
+            "default": "INFO",
+            "disable_formula": true,
+            "hint": "Flag your message with a log level to easily find the right entry in the Workato logs.",
+            "label": "Log level",
+            "name": "log_level",
+            "ngIf": "input.user_logs_enabled == true",
+            "optional": false,
+            "pick_list": [
+              [
+                "INFO",
+                "INFO"
+              ],
+              [
+                "WARN",
+                "WARN"
+              ],
+              [
+                "ERROR",
+                "ERROR"
+              ]
+            ],
+            "type": "string"
+          },
+          {
+            "control_type": "switch",
+            "default": false,
+            "disable_formula": true,
+            "extends_schema": true,
+            "hint": "                Send a copy of the message to Workato logs.\n                <a href=\"https://docs.workato.com/features/logging-service.html\" target=\"_blank\" class=\"ng-scope\">\n                  Learn more\n                </a>\n",
+            "label": "Send to Workato log service",
+            "name": "user_logs_enabled",
+            "optional": true,
+            "type": "string"
+          }
+        ],
+        "uuid": "5649a6ba-90d0-4f75-9f73-8cbe2a4c8a0e"
+      },
+      {
+        "number": 3,
+        "provider": "workato_recipe_function",
+        "name": "return_result",
+        "as": "cde67dd7",
+        "keyword": "action",
+        "input": {
+          "result": {
+            "category": "#{_dp('{\"pill_type\":\"output\",\"provider\":\"anthropic_connector_2100003785_1768602991\",\"line\":\"d14c6dc3\",\"path\":[\"catgory\"]}')}",
+            "confidence": "#{_dp('{\"pill_type\":\"output\",\"provider\":\"anthropic_connector_2100003785_1768602991\",\"line\":\"d14c6dc3\",\"path\":[\"confidence\"]}')}",
+            "message": "#{_dp('{\"pill_type\":\"output\",\"provider\":\"workato_recipe_function\",\"line\":\"fe67462b\",\"path\":[\"parameters\",\"message\"]}')}",
+            "due_date": "#{_dp('{\"pill_type\":\"output\",\"provider\":\"anthropic_connector_2100003785_1768602991\",\"line\":\"d14c6dc3\",\"path\":[\"due_date\"]}')}"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "category",
+                "name": "category",
+                "type": "string",
+                "optional": false,
+                "hint": "Category for the message"
+              },
+              {
+                "control_type": "text",
+                "label": "confidence",
+                "name": "confidence",
+                "type": "string",
+                "optional": false,
+                "hint": "Confidence of the Classification"
+              },
+              {
+                "control_type": "text",
+                "label": "message",
+                "name": "message",
+                "type": "string",
+                "optional": false,
+                "hint": "Original message"
+              },
+              {
+                "control_type": "text",
+                "label": "due date",
+                "name": "due_date",
+                "type": "string",
+                "optional": true
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "category",
+                "name": "category",
+                "type": "string",
+                "optional": false,
+                "hint": "Category for the message"
+              },
+              {
+                "control_type": "text",
+                "label": "confidence",
+                "name": "confidence",
+                "type": "string",
+                "optional": false,
+                "hint": "Confidence of the Classification"
+              },
+              {
+                "control_type": "text",
+                "label": "message",
+                "name": "message",
+                "type": "string",
+                "optional": false,
+                "hint": "Original message"
+              },
+              {
+                "control_type": "text",
+                "label": "due date",
+                "name": "due_date",
+                "type": "string",
+                "optional": true
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "visible_config_fields": [
+          "result",
+          "result.category",
+          "result.confidence",
+          "result.message",
+          "result.due_date"
+        ],
+        "uuid": "f77b2b0f-1c75-47a9-908e-45331f284665"
+      }
+    ],
+    "uuid": "a1e76cb2-fae6-4fdb-952f-a92b5ed76e4f"
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "workato_recipe_function",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "logger",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "anthropic_connector_2100003785_1768602991",
+      "skip_validation": false,
+      "account_id": {
+        "zip_name": "esb/connections/myanthropicapikey.connection.json",
+        "name": "MyAnthropicAPIKey",
+        "folder": "esb/connections",
+        "custom": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+README.md
+.claude/
+.sfdx/
+.workatoenv
+.venv/
+venv/
+.env
+.gitignore
+.gitattributes
+.gitmodules
+.git/
+.gitignore
+.gitattributes
+.markdownlint.json

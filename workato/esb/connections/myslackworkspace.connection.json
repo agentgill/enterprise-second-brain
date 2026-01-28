@@ -1,0 +1,5 @@
+{
+  "name": "MySlackWorkspace",
+  "provider": "slack",
+  "root_folder": false
+}

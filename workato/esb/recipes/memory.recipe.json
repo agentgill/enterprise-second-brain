@@ -1,0 +1,325 @@
+{
+  "name": "Memory",
+  "description": "",
+  "version": 9,
+  "private": false,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "workato_recipe_function",
+    "name": "execute",
+    "as": "ab707ac2",
+    "keyword": "trigger",
+    "input": {
+      "parameters_schema_json": "[{\"name\":\"category\",\"type\":\"string\",\"optional\":false,\"label\":\"category\",\"control_type\":\"text\"},{\"name\":\"confidence\",\"type\":\"string\",\"optional\":false,\"label\":\"confidence\",\"control_type\":\"text\"},{\"name\":\"message\",\"type\":\"string\",\"optional\":false,\"label\":\"message\",\"control_type\":\"text\"},{\"name\":\"due_date\",\"type\":\"string\",\"optional\":true,\"label\":\"due_date\",\"control_type\":\"text\"}]",
+      "result_schema_json": "[{\"control_type\":\"text\",\"label\":\"id\",\"name\":\"id\",\"type\":\"string\",\"optional\":false,\"hint\":\"Salesforce id from successful create\"}]"
+    },
+    "extended_output_schema": [
+      {
+        "label": "Parameters",
+        "name": "parameters",
+        "properties": [
+          {
+            "control_type": "text",
+            "label": "category",
+            "name": "category",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "control_type": "text",
+            "label": "confidence",
+            "name": "confidence",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "control_type": "text",
+            "label": "message",
+            "name": "message",
+            "type": "string",
+            "optional": false
+          },
+          {
+            "control_type": "text",
+            "label": "due_date",
+            "name": "due_date",
+            "type": "string",
+            "optional": true
+          }
+        ],
+        "type": "object"
+      }
+    ],
+    "block": [
+      {
+        "number": 1,
+        "keyword": "try",
+        "input": {
+        },
+        "block": [
+          {
+            "number": 2,
+            "provider": "salesforce",
+            "name": "create_custom_object",
+            "as": "333457f1",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "sobject_name": "Second Brain"
+            },
+            "toggleCfg": {
+              "Category__c": false,
+              "Confidence__c": false
+            },
+            "input": {
+              "sobject_name": "Second_Brain__c",
+              "Category__c": "#{_dp('{\"pill_type\":\"output\",\"provider\":\"workato_recipe_function\",\"line\":\"ab707ac2\",\"path\":[\"parameters\",\"category\"]}')}",
+              "Confidence__c": "#{_dp('{\"pill_type\":\"output\",\"provider\":\"workato_recipe_function\",\"line\":\"ab707ac2\",\"path\":[\"parameters\",\"confidence\"]}')}",
+              "Due_Date__c": "=_dp('{\"pill_type\":\"output\",\"provider\":\"workato_recipe_function\",\"line\":\"ab707ac2\",\"path\":[\"parameters\",\"due_date\"]}').to_time",
+              "Message__c": "#{_dp('{\"pill_type\":\"output\",\"provider\":\"workato_recipe_function\",\"line\":\"ab707ac2\",\"path\":[\"parameters\",\"message\"]}')}"
+            },
+            "extended_input_schema": [
+              {
+                "control_type": "text",
+                "custom": false,
+                "label": "Owner ID",
+                "name": "OwnerId",
+                "optional": true,
+                "type": "string",
+                "sfdc_createable": true,
+                "sfdc_updateable": true
+              },
+              {
+                "control_type": "select",
+                "custom": true,
+                "hint": "Categorize this entry: People, Projects, Ideas, Admin, or Other",
+                "label": "Category",
+                "name": "Category__c",
+                "optional": true,
+                "pick_list": "sobject_field_values_list",
+                "pick_list_params": {
+                  "sobject_name": "\"Second_Brain__c\"",
+                  "field_name": "\"Category__c\""
+                },
+                "toggle_field": {
+                  "control_type": "text",
+                  "label": "Category",
+                  "toggle_hint": "Enter custom value",
+                  "optional": true,
+                  "custom": true,
+                  "hint": "Categorize this entry: People, Projects, Ideas, Admin, or Other",
+                  "sfdc_createable": true,
+                  "sfdc_updateable": true,
+                  "type": "string",
+                  "name": "Category__c"
+                },
+                "toggle_hint": "Select from list",
+                "type": "string",
+                "sfdc_createable": true,
+                "sfdc_updateable": true
+              },
+              {
+                "control_type": "select",
+                "custom": true,
+                "hint": "Select how confident you are in this information: Low, Medium, or High",
+                "label": "Confidence",
+                "name": "Confidence__c",
+                "optional": true,
+                "pick_list": "sobject_field_values_list",
+                "pick_list_params": {
+                  "sobject_name": "\"Second_Brain__c\"",
+                  "field_name": "\"Confidence__c\""
+                },
+                "toggle_field": {
+                  "control_type": "text",
+                  "label": "Confidence",
+                  "toggle_hint": "Enter custom value",
+                  "optional": true,
+                  "custom": true,
+                  "hint": "Select how confident you are in this information: Low, Medium, or High",
+                  "sfdc_createable": true,
+                  "sfdc_updateable": true,
+                  "type": "string",
+                  "name": "Confidence__c"
+                },
+                "toggle_hint": "Select from list",
+                "type": "string",
+                "sfdc_createable": true,
+                "sfdc_updateable": true
+              },
+              {
+                "control_type": "date_time",
+                "custom": true,
+                "hint": "When is this item due?",
+                "label": "Due Date",
+                "name": "Due_Date__c",
+                "optional": true,
+                "parse_output": "parse_iso8601_timestamp",
+                "type": "date_time",
+                "render_input": "render_iso8601_timestamp",
+                "sfdc_createable": true,
+                "sfdc_updateable": true
+              },
+              {
+                "control_type": "text-area",
+                "custom": true,
+                "hint": "Enter detailed information, notes, or context about this item",
+                "label": "Message",
+                "name": "Message__c",
+                "optional": true,
+                "type": "string",
+                "sfdc_createable": true,
+                "sfdc_updateable": true
+              }
+            ],
+            "visible_config_fields": [
+              "sobject_name",
+              "requester_email",
+              "Message__c",
+              "Due_Date__c",
+              "Confidence__c",
+              "Category__c"
+            ],
+            "uuid": "b09f970f-1cad-4edd-a29d-d4064ff5f569"
+          },
+          {
+            "number": 3,
+            "as": "63047105",
+            "keyword": "catch",
+            "input": {
+              "max_retry_count": "0",
+              "retry_interval": "2"
+            },
+            "block": [
+              {
+                "number": 4,
+                "provider": "logger",
+                "name": "log_message",
+                "as": "50edc884",
+                "keyword": "action",
+                "input": {
+                  "user_logs_enabled": true,
+                  "log_level": "ERROR",
+                  "message": "#{_dp('{\"pill_type\":\"output\",\"provider\":\"catch\",\"line\":\"63047105\",\"path\":[\"message\"]}')}"
+                },
+                "extended_input_schema": [
+                  {
+                    "control_type": "select",
+                    "default": "INFO",
+                    "disable_formula": true,
+                    "hint": "Flag your message with a log level to easily find the right entry in the Workato logs.",
+                    "label": "Log level",
+                    "name": "log_level",
+                    "ngIf": "input.user_logs_enabled == true",
+                    "optional": false,
+                    "pick_list": [
+                      [
+                        "INFO",
+                        "INFO"
+                      ],
+                      [
+                        "WARN",
+                        "WARN"
+                      ],
+                      [
+                        "ERROR",
+                        "ERROR"
+                      ]
+                    ],
+                    "type": "string"
+                  },
+                  {
+                    "control_type": "switch",
+                    "default": false,
+                    "disable_formula": true,
+                    "extends_schema": true,
+                    "hint": "                Send a copy of the message to Workato logs.\n                <a href=\"https://docs.workato.com/features/logging-service.html\" target=\"_blank\" class=\"ng-scope\">\n                  Learn more\n                </a>\n",
+                    "label": "Send to Workato log service",
+                    "name": "user_logs_enabled",
+                    "optional": true,
+                    "type": "string"
+                  }
+                ],
+                "uuid": "de44aee0-3e28-48e6-a685-9e4a3bf62982"
+              }
+            ],
+            "uuid": "a8175793-413f-47ba-94f9-45f878e45ae2"
+          }
+        ],
+        "uuid": "1f7e3573-033b-4cf1-b5ce-0e6d24030b52"
+      },
+      {
+        "number": 5,
+        "provider": "workato_recipe_function",
+        "name": "return_result",
+        "as": "d8f494a7",
+        "keyword": "action",
+        "input": {
+          "result": {
+            "id": "#{_dp('{\"pill_type\":\"output\",\"provider\":\"salesforce\",\"line\":\"333457f1\",\"path\":[\"id\"]}')}"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "id",
+                "name": "id",
+                "type": "string",
+                "optional": false,
+                "hint": "Salesforce id from successful create"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "id",
+                "name": "id",
+                "type": "string",
+                "optional": false,
+                "hint": "Salesforce id from successful create"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "uuid": "a0136bcc-af75-4e3f-8e5f-54ae4860e5b8"
+      }
+    ],
+    "uuid": "f6b46626-a8cc-4575-94c6-f67b2a0aecb2"
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "workato_recipe_function",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "salesforce",
+      "skip_validation": false,
+      "account_id": {
+        "zip_name": "esb/connections/mysalesforceorg.connection.json",
+        "name": "MySalesforceOrg",
+        "folder": "esb/connections"
+      }
+    },
+    {
+      "keyword": "application",
+      "provider": "logger",
+      "skip_validation": false,
+      "account_id": null
+    }
+  ]
+}

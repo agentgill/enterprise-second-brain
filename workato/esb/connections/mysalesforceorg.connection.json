@@ -1,0 +1,5 @@
+{
+  "name": "MySalesforceOrg",
+  "provider": "salesforce",
+  "root_folder": false
+}

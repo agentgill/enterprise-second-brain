@@ -1,0 +1,511 @@
+{
+  "name": "Ingress",
+  "description": "",
+  "version": 21,
+  "private": false,
+  "concurrency": 1,
+  "code": {
+    "number": 0,
+    "provider": "slack",
+    "name": "new_event",
+    "as": "91503a3a",
+    "keyword": "trigger",
+    "input": {
+      "webhook_suffix": "ingress"
+    },
+    "filter": {
+      "conditions": [
+        {
+          "operand": "equals_to",
+          "lhs": "#{_dp('{\"pill_type\":\"output\",\"provider\":\"slack\",\"line\":\"91503a3a\",\"path\":[\"event\",\"channel\"]}')}",
+          "rhs": "C0A8YDZA7UN",
+          "uuid": "cecfbac3-17ca-404e-9e77-f4d98dfd94b9"
+        }
+      ],
+      "operand": "and",
+      "type": "compound"
+    },
+    "block": [
+      {
+        "number": 1,
+        "keyword": "try",
+        "input": {
+        },
+        "block": [
+          {
+            "number": 2,
+            "provider": "lookup_table",
+            "name": "get_entry",
+            "as": "79ec9317",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "lookup_table_id": "slack_events_processed"
+            },
+            "input": {
+              "lookup_table_id": {
+                "zip_name": "slack_events_processed.lookup_table.json",
+                "name": "slack_events_processed",
+                "folder": ""
+              },
+              "parameters": {
+                "col1": "#{_dp('{\"pill_type\":\"output\",\"provider\":\"slack\",\"line\":\"91503a3a\",\"path\":[\"event_id\"]}')}"
+              }
+            },
+            "extended_output_schema": [
+              {
+                "control_type": "number",
+                "label": "Entry ID",
+                "name": "id",
+                "parse_output": "integer_conversion",
+                "type": "integer"
+              },
+              {
+                "label": "Entry",
+                "name": "entry",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "slack_event_id",
+                    "name": "col1",
+                    "type": "string",
+                    "sticky": true
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "hint": "Provide one or more entry fields to search the entry",
+                "label": "Lookup by",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "slack_event_id",
+                    "name": "col1",
+                    "type": "string",
+                    "sticky": true,
+                    "optional": true
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "uuid": "9f95e63d-ccbb-4ea7-aadf-bb13a1dcce93"
+          },
+          {
+            "number": 3,
+            "as": "13eefb3c",
+            "keyword": "catch",
+            "input": {
+              "max_retry_count": "0",
+              "retry_interval": "1"
+            },
+            "block": [
+              {
+                "number": 4,
+                "provider": "lookup_table",
+                "name": "add_entry",
+                "as": "3f8a8851",
+                "keyword": "action",
+                "dynamicPickListSelection": {
+                  "lookup_table_id": "slack_events_processed"
+                },
+                "input": {
+                  "lookup_table_id": {
+                    "zip_name": "slack_events_processed.lookup_table.json",
+                    "name": "slack_events_processed",
+                    "folder": ""
+                  },
+                  "parameters": {
+                    "col1": "#{_dp('{\"pill_type\":\"output\",\"provider\":\"slack\",\"line\":\"91503a3a\",\"path\":[\"event_id\"]}')}"
+                  }
+                },
+                "extended_output_schema": [
+                  {
+                    "control_type": "number",
+                    "label": "Entry ID",
+                    "name": "id",
+                    "parse_output": "integer_conversion",
+                    "type": "integer"
+                  },
+                  {
+                    "label": "Entry",
+                    "name": "entry",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "slack_event_id",
+                        "name": "col1",
+                        "type": "string",
+                        "sticky": true
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "extended_input_schema": [
+                  {
+                    "hint": "Fill the fields for the new entry",
+                    "label": "Entry fields",
+                    "name": "parameters",
+                    "properties": [
+                      {
+                        "control_type": "text",
+                        "label": "slack_event_id",
+                        "name": "col1",
+                        "type": "string",
+                        "sticky": true,
+                        "optional": true
+                      }
+                    ],
+                    "type": "object"
+                  }
+                ],
+                "uuid": "6d8b1f7f-86c0-4342-9344-3d29de61c8bb"
+              }
+            ],
+            "uuid": "21ade1df-aeb5-484f-ad8c-63050952d438"
+          }
+        ],
+        "uuid": "16fe10e3-9515-4d1f-8477-2ed3ba77619f"
+      },
+      {
+        "number": 5,
+        "provider": "workato_recipe_function",
+        "name": "call_recipe",
+        "as": "04309381",
+        "keyword": "action",
+        "dynamicPickListSelection": {
+          "flow_id": "Classifier"
+        },
+        "input": {
+          "flow_id": {
+            "zip_name": "esb/recipes/classifier.recipe.json",
+            "name": "Classifier",
+            "folder": "esb/recipes"
+          },
+          "parameters": {
+            "message": "#{_dp('{\"pill_type\":\"output\",\"provider\":\"slack\",\"line\":\"91503a3a\",\"path\":[\"event\",\"text\"]}')}"
+          }
+        },
+        "extended_output_schema": [
+          {
+            "label": "Result",
+            "name": "result",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "category",
+                "name": "category",
+                "type": "string",
+                "optional": false,
+                "hint": "Category for the message"
+              },
+              {
+                "control_type": "text",
+                "label": "confidence",
+                "name": "confidence",
+                "type": "string",
+                "optional": false,
+                "hint": "Confidence of the Classification"
+              },
+              {
+                "control_type": "text",
+                "label": "message",
+                "name": "message",
+                "type": "string",
+                "optional": false,
+                "hint": "Original message"
+              },
+              {
+                "control_type": "text",
+                "label": "due date",
+                "name": "due_date",
+                "type": "string",
+                "optional": true
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "extended_input_schema": [
+          {
+            "label": "Parameters",
+            "name": "parameters",
+            "properties": [
+              {
+                "control_type": "text",
+                "label": "Message",
+                "type": "string",
+                "name": "message"
+              }
+            ],
+            "type": "object"
+          }
+        ],
+        "uuid": "1e5d1dd2-6c62-4853-a6c6-bce34b8c3135"
+      },
+      {
+        "number": 6,
+        "provider": "logger",
+        "name": "log_message",
+        "as": "97ed6238",
+        "keyword": "action",
+        "input": {
+          "user_logs_enabled": true,
+          "log_level": "INFO",
+          "message": "=_dp('{\"pill_type\":\"output\",\"provider\":\"workato_recipe_function\",\"line\":\"04309381\",\"path\":[\"result\",\"category\"]}') + \": \" + _dp('{\"pill_type\":\"output\",\"provider\":\"workato_recipe_function\",\"line\":\"04309381\",\"path\":[\"result\",\"confidence\"]}') + \": \" + _dp('{\"pill_type\":\"output\",\"provider\":\"workato_recipe_function\",\"line\":\"04309381\",\"path\":[\"result\",\"message\"]}') + \": \" + _dp('{\"pill_type\":\"output\",\"provider\":\"workato_recipe_function\",\"line\":\"04309381\",\"path\":[\"result\",\"due_date\"]}')"
+        },
+        "extended_input_schema": [
+          {
+            "control_type": "select",
+            "default": "INFO",
+            "disable_formula": true,
+            "hint": "Flag your message with a log level to easily find the right entry in the Workato logs.",
+            "label": "Log level",
+            "name": "log_level",
+            "ngIf": "input.user_logs_enabled == true",
+            "optional": false,
+            "pick_list": [
+              [
+                "INFO",
+                "INFO"
+              ],
+              [
+                "WARN",
+                "WARN"
+              ],
+              [
+                "ERROR",
+                "ERROR"
+              ]
+            ],
+            "type": "string"
+          },
+          {
+            "control_type": "switch",
+            "default": false,
+            "disable_formula": true,
+            "extends_schema": true,
+            "hint": "                Send a copy of the message to Workato logs.\n                <a href=\"https://docs.workato.com/features/logging-service.html\" target=\"_blank\" class=\"ng-scope\">\n                  Learn more\n                </a>\n",
+            "label": "Send to Workato log service",
+            "name": "user_logs_enabled",
+            "optional": true,
+            "type": "string"
+          }
+        ],
+        "uuid": "d30de8f6-49f0-4f87-8516-cead05fba32d"
+      },
+      {
+        "number": 7,
+        "keyword": "if",
+        "input": {
+          "type": "compound",
+          "operand": "and",
+          "conditions": [
+            {
+              "operand": "present",
+              "lhs": "#{_dp('{\"pill_type\":\"output\",\"provider\":\"workato_recipe_function\",\"line\":\"04309381\",\"path\":[\"result\",\"category\"]}')}",
+              "rhs": "",
+              "uuid": "481f410b-224d-4f09-8c97-af6605517cf9"
+            },
+            {
+              "operand": "present",
+              "lhs": "#{_dp('{\"pill_type\":\"output\",\"provider\":\"workato_recipe_function\",\"line\":\"04309381\",\"path\":[\"result\",\"confidence\"]}')}",
+              "rhs": "",
+              "uuid": "77903b14-df02-4cf2-917a-8d1efec4819d"
+            }
+          ]
+        },
+        "block": [
+          {
+            "number": 8,
+            "provider": "workato_recipe_function",
+            "name": "call_recipe",
+            "as": "8a3deab8",
+            "keyword": "action",
+            "dynamicPickListSelection": {
+              "flow_id": "Memory"
+            },
+            "input": {
+              "flow_id": {
+                "zip_name": "esb/recipes/memory.recipe.json",
+                "name": "Memory",
+                "folder": "esb/recipes"
+              },
+              "parameters": {
+                "category": "#{_dp('{\"pill_type\":\"output\",\"provider\":\"workato_recipe_function\",\"line\":\"04309381\",\"path\":[\"result\",\"category\"]}')}",
+                "confidence": "#{_dp('{\"pill_type\":\"output\",\"provider\":\"workato_recipe_function\",\"line\":\"04309381\",\"path\":[\"result\",\"confidence\"]}')}",
+                "message": "#{_dp('{\"pill_type\":\"output\",\"provider\":\"workato_recipe_function\",\"line\":\"04309381\",\"path\":[\"result\",\"message\"]}')}",
+                "due_date": "#{_dp('{\"pill_type\":\"output\",\"provider\":\"workato_recipe_function\",\"line\":\"04309381\",\"path\":[\"result\",\"due_date\"]}')}"
+              }
+            },
+            "extended_output_schema": [
+              {
+                "label": "Result",
+                "name": "result",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "id",
+                    "name": "id",
+                    "type": "string",
+                    "optional": false,
+                    "hint": "Salesforce id from successful create"
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "extended_input_schema": [
+              {
+                "label": "Parameters",
+                "name": "parameters",
+                "properties": [
+                  {
+                    "control_type": "text",
+                    "label": "category",
+                    "name": "category",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "confidence",
+                    "name": "confidence",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "message",
+                    "name": "message",
+                    "type": "string",
+                    "optional": false
+                  },
+                  {
+                    "control_type": "text",
+                    "label": "due_date",
+                    "name": "due_date",
+                    "type": "string",
+                    "optional": true
+                  }
+                ],
+                "type": "object"
+              }
+            ],
+            "visible_config_fields": [
+              "flow_id",
+              "parameters.due_date"
+            ],
+            "uuid": "38e801a8-e4c4-4aee-9e65-73352aa16d65"
+          },
+          {
+            "number": 9,
+            "provider": "logger",
+            "name": "log_message",
+            "as": "c3540426",
+            "keyword": "action",
+            "input": {
+              "user_logs_enabled": true,
+              "message": "Add to My Enterprise Second Brain successfully with Id #{_dp('{\"pill_type\":\"output\",\"provider\":\"workato_recipe_function\",\"line\":\"8a3deab8\",\"path\":[\"result\",\"id\"]}')}",
+              "log_level": "INFO"
+            },
+            "extended_input_schema": [
+              {
+                "control_type": "select",
+                "default": "INFO",
+                "disable_formula": true,
+                "hint": "Flag your message with a log level to easily find the right entry in the Workato logs.",
+                "label": "Log level",
+                "name": "log_level",
+                "ngIf": "input.user_logs_enabled == true",
+                "optional": false,
+                "pick_list": [
+                  [
+                    "INFO",
+                    "INFO"
+                  ],
+                  [
+                    "WARN",
+                    "WARN"
+                  ],
+                  [
+                    "ERROR",
+                    "ERROR"
+                  ]
+                ],
+                "type": "string"
+              },
+              {
+                "control_type": "switch",
+                "default": false,
+                "disable_formula": true,
+                "extends_schema": true,
+                "hint": "                Send a copy of the message to Workato logs.\n                <a href=\"https://docs.workato.com/features/logging-service.html\" target=\"_blank\" class=\"ng-scope\">\n                  Learn more\n                </a>\n",
+                "label": "Send to Workato log service",
+                "name": "user_logs_enabled",
+                "optional": true,
+                "type": "string"
+              }
+            ],
+            "uuid": "0215d315-7700-47f3-a9fd-befb52647e87"
+          },
+          {
+            "number": 10,
+            "as": "ca97bcff",
+            "keyword": "stop",
+            "input": {
+              "stop_with_error": "false"
+            },
+            "uuid": "5aa3b0a7-892e-4806-aa32-b1adef36bf41"
+          }
+        ],
+        "uuid": "f46d04e0-9430-415f-98cc-338b8d66d251"
+      },
+      {
+        "number": 11,
+        "as": "f84951db",
+        "keyword": "stop",
+        "input": {
+          "stop_with_error": "true",
+          "stop_reason": "Message is unclassified"
+        },
+        "uuid": "274c68b4-678c-4b65-96be-9dbe99fc8343"
+      }
+    ],
+    "uuid": "f0c70cca-79c1-4d66-bd4b-f2fc457c8730"
+  },
+  "config": [
+    {
+      "keyword": "application",
+      "provider": "slack",
+      "skip_validation": false,
+      "account_id": {
+        "zip_name": "esb/connections/myslackworkspace.connection.json",
+        "name": "MySlackWorkspace",
+        "folder": "esb/connections"
+      }
+    },
+    {
+      "keyword": "application",
+      "provider": "lookup_table",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "logger",
+      "skip_validation": false,
+      "account_id": null
+    },
+    {
+      "keyword": "application",
+      "provider": "workato_recipe_function",
+      "skip_validation": false,
+      "account_id": null
+    }
+  ]
+}

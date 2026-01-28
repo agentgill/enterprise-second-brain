@@ -1,0 +1,8 @@
+{
+  "title": "Anthropic",
+  "description": "[Anthropic](https://www.anthropic.com/) is designed to help businesses integrate and interact with large language AI models. It empowers users to leverage the capabilities of Anthropic's advanced language models for a variety of tasks, including natural language understanding, content generation, conversational AI, and more. It provides secure, private, and high-performing AI services, ideal for developing AI-driven applications efficiently and effectively.\r\n\r\n## Examples of what can you do with this connector\r\n\r\n- Analyze text to answer user-provided questions\r\n- Categorize text based on user-defined categories\r\n- Draft emails based on user description\r\n- Summarize text in a configurable length\r\n- Translate text between languages\r\n- Generate or modify images using prompts\r\n\r\n## Support\r\n\r\nThis connector was built and is supported by Workato. Send all your bug reports or enhancement requests through our support channels found [here](https://support.workato.com/support/tickets/new) or get support via intercom at the bottom right of your screen. Let our support team know the name of this connector and that it was installed from the community for them to properly route your support tickets.",
+  "logo_file_name": "data",
+  "logo_content_type": "image/png",
+  "version_no": 1,
+  "note": "Initial Version"
+}

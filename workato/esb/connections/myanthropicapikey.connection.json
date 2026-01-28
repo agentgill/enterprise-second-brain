@@ -1,0 +1,9 @@
+{
+  "name": "MyAnthropicAPIKey",
+  "provider": {
+    "zip_name": "anthropic.custom_adapter.json",
+    "name": "Anthropic",
+    "folder": ""
+  },
+  "root_folder": false
+}

@@ -1,0 +1,9 @@
+[project]
+name = "enteprise-second-brain"
+version = "0.1.0"
+description = "Building an Enterprise Second Brain using Workato, Slack, Anthropic & Salesforce"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "workato-platform-cli>=1.0.2",
+]
