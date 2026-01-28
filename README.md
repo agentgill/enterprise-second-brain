@@ -10,7 +10,7 @@ No tagging. No deciding where things go. No friction.
 
 Inspired by Nate Channel's approach using Zapier, adapted for enterprise environments using Slack, Workato, Claude, and Salesforce.
 
-Full Post on Medium -- including Step-by-Step 
+[Full Post on Medium](https://medium.com/@agentgill/the-enterprise-second-brain-350cd4359ac5?source=friends_link&sk=afbb10a2b1d3d1a977b490cb7f8c4ddc) -- including Step-by-Step
 
 ## Developer Fast Track 🚀
 
